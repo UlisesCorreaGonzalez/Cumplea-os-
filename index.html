@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Invitación de Cumpleaños - Ulises</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background: url('https://images.unsplash.com/photo-1513151233558-d860c5398176?q=80&w=2070&auto=format&fit=crop') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-shadow: 0 0 8px rgba(0,0,0,0.7);
+    }
+
+    .overlay {
+      background: rgba(0,0,0,0.55);
+      width: 100%;
+      min-height: 100vh;
+      padding: 30px 15px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      background: rgba(0,0,0,0.5);
+      backdrop-filter: blur(6px);
+      padding: 25px;
+      width: 100%;
+      max-width: 480px;
+      border-radius: 20px;
+      border: 3px solid #ff4ae7;
+      box-shadow:
+        0 0 10px #ff4ae7,
+        0 0 20px #ff4ae7,
+        0 0 30px #ff4ae7,
+        0 0 40px #b44aff,
+        0 0 70px #b44aff;
+      animation: fadeIn 1.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 34px;
+      margin-bottom: 5px;
+      color: #ffdeff;
+    }
+
+    .subtitle {
+      text-align: center;
+      font-size: 16px;
+      margin-bottom: 25px;
+      color: #ffd3f7;
+    }
+
+    .info-box {
+      background: rgba(255,255,255,0.1);
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      backdrop-filter: blur(4px);
+    }
+
+    .button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(90deg,#ff5ca8,#7a6cff);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 8px;
+      box-shadow: 0 0 15px rgba(255,92,168,0.6);
+      transition: 0.2s;
+    }
+
+    .button:hover {
+      transform: scale(1.03);
+    }
+
+    #confettiCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 9999;
+    }
+  </style>
+</head>
+
+<body>
+  <canvas id="confettiCanvas"></canvas>
+
+  <div class="overlay">
+    <div class="card">
+      <h1>🎉¡Cumpleaños de Ulises!🎉</h1>
+      <p class="subtitle">Estás invitade a celebrar conmigo</p>
+
+      <div class="info-box">
+        <p><b>📅 Fecha:</b> Viernes 05 de diciembre</p>
+        <p><b>📍 Lugar:</b> Coordenadas abajo ↓</p>
+
+        <div style="margin-top:15px; display:flex; justify-content:center;">
+          <iframe 
+            src="https://www.google.com/maps?q=19.882277614970825,-100.64890650177827&hl=es&z=17&output=embed" 
+            width="100%" 
+            height="250" 
+            style="border:0; border-radius:15px; box-shadow:0 0 15px rgba(0,0,0,0.4);" 
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+      <button class="button" onclick="throwConfetti()">🎊 Lanzar Confeti</button>
+
+      <a href="https://wa.me/524437216707?text=Muchas%20felicidades!%20Asistiré%20a%20tu%20fiesta" target="_blank">
+        <button class="button">✔️ Confirmar asistencia</button>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- Música -->
+  <audio id="bgMusic" autoplay loop muted>
+    <source src="https://dl.sndup.net/7v4d/Quando_no_era_cantante.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Ventana flotante con video local -->
+  <div id="videoBox" style="
+    position: fixed; 
+    bottom: 20px; 
+    right: 20px; 
+    width: 200px; 
+    height: 120px; 
+    z-index: 9999; 
+    border: 2px solid #0ff; 
+    box-shadow: 0 0 15px #0ff; 
+    border-radius: 10px; 
+    overflow: hidden;
+    background: black;">
+    
+    <video 
+      id="miniVideo"
+      src="tiktok.mp4" 
+      autoplay 
+      loop 
+      muted 
+      playsinline
+      style="width: 100%; height: 100%; object-fit: cover;">
+    </video>
+
+  </div>
+
+  <script>
+    // Activar música + video con sonido al primer toque
+    document.addEventListener('click', () => {
+      const audio = document.getElementById('bgMusic');
+      const video = document.getElementById('miniVideo');
+
+      // Activa audio
+      audio.muted = false;
+      audio.volume = 0.60;
+      audio.play().catch(() => {});
+
+      // Activa sonido del video
+      video.muted = false;
+      video.play().catch(() => {});
+    }, { once: true });
+
+    // Confeti
+    function throwConfetti() {
+      const duration = 1200;
+      const end = Date.now() + duration;
+
+      (function frame() {
+        confetti({ particleCount: 5, spread: 60, origin: { y: 0.2 } });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    }
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+</body>
+</html>
